@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>For Chanee 💖</title>
+  <meta name="description" content="A fun silly valentine page for Chanee." />
+  <style>
+    :root{
+      --bg1:#ffd7e9;
+      --bg2:#ff9dc7;
+      --card:#ffffffde;
+      --text:#5b2142;
+      --yes:#ff4d88;
+      --yes-dark:#e43a73;
+      --no:#6d5ef5;
+      --line:#ffffffb9;
+      --shadow:0 14px 34px rgba(0,0,0,.16);
+      --r:24px;
+    }
+
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    html,body{ margin:0; padding:0; }
+
+    body{
+      min-height:100svh;
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Noto Sans", sans-serif;
+      color:var(--text);
+      background: linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+      padding: max(14px, env(safe-area-inset-top)) 14px max(16px, env(safe-area-inset-bottom));
+      display:grid;
+      place-items:center;
+    }
+
+    /* Floating hearts */
+    #hearts{
+      position:fixed; inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+    }
+    .heart{
+      position:absolute;
+      bottom:-32px;
+      opacity:.88;
+      font-size:20px;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,.13));
+      animation: floatUp linear forwards;
+    }
+    @keyframes floatUp{
+      to{
+        transform: translateY(-115vh) rotate(20deg);
+        opacity:0;
+      }
+    }
+
+    .card{
+      position:relative;
+      z-index:1;
+      width:min(95vw, 560px);
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(6px);
+      padding:20px 16px 16px;
+      text-align:center;
+    }
+
+    h1{
+      margin:0 0 8px;
+      font-size: clamp(25px, 5vw, 36px);
+      line-height:1.2;
+      letter-spacing:.2px;
+    }
+    .msg{
+      margin:0 auto 14px;
+      max-width:96%;
+      font-size: clamp(15px, 2.5vw, 18px);
+      line-height:1.55;
+      font-weight:600;
+      color:#652748;
+    }
+
+    /* Music player */
+    .music{
+      background:#fff;
+      border:1px solid #f2d6e4;
+      border-radius:14px;
+      box-shadow:0 8px 16px rgba(0,0,0,.08);
+      padding:10px;
+      margin:0 0 14px;
+    }
+    .track{
+      font-size:13px;
+      font-weight:700;
+      margin:0 0 8px;
+      text-align:center;
+    }
+    .controls{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:8px;
+      align-items:center;
+    }
+    .mini-btn{
+      border:0;
+      border-radius:10px;
+      padding:10px 12px;
+      background:#f7f1f5;
+      color:#5a2142;
+      font-weight:700;
+      cursor:pointer;
+      min-width:84px;
+    }
+    .seek{
+      width:100%;
+      accent-color:#ff4d88;
+    }
+    .time{
+      font-size:12px;
+      font-weight:700;
+      color:#6d3a57;
+      min-width:76px;
+      text-align:right;
+    }
+    .sub-controls{
+      margin-top:8px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .volume-wrap{
+      display:flex; align-items:center; gap:8px;
+      font-size:12px; font-weight:700;
+    }
+    .volume{
+      width:120px;
+      accent-color:#ff4d88;
+    }
+    .hint{
+      margin:6px 0 0;
+      font-size:12px;
+      opacity:.8;
+      text-align:left;
+    }
+
+    .playground{
+      position:relative;
+      height:238px;
+      border-radius:18px;
+      border:1px dashed #ffffffd0;
+      background:linear-gradient(180deg, #fff8, #fff4);
+      overflow:hidden;
+      touch-action:none;
+    }
+
+    .btn{
+      border:0;
+      border-radius:999px;
+      padding:14px 22px;
+      font-size:18px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.15);
+      transition:transform .14s ease, filter .2s ease;
+      touch-action:manipulation;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+    .btn:active{ transform:scale(.96); }
+
+    #yesBtn{
+      position:absolute;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      background:var(--yes);
+      color:#fff;
+    }
+    #yesBtn:hover{ background:var(--yes-dark); }
+
+    #noBtn{
+      position:absolute;
+      left:62%;
+      top:20px;
+      background:var(--no);
+      color:#fff;
+      min-width:92px;
+    }
+
+    .tease{
+      min-height:24px;
+      margin:9px 0 0;
+      font-size:14px;
+      font-weight:700;
+    }
+    .note{
+      margin-top:6px;
+      font-size:12px;
+      opacity:.78;
+    }
+
+    /* Modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.46);
+      display:grid;
+      place-items:center;
+      z-index:9999;
+      padding:16px;
+    }
+    .hidden{ display:none; }
+
+    .modal-card{
+      width:min(95vw, 580px);
+      background:#fff;
+      border:1px solid #f1d7e5;
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:16px;
+      text-align:center;
+      animation:pop .24s ease;
+    }
+    @keyframes pop{
+      from{ transform:scale(.92); opacity:.4; }
+      to{ transform:scale(1); opacity:1; }
+    }
+
+    .modal h2{
+      margin:0 0 8px;
+      font-size:31px;
+      color:#d63384;
+    }
+    .modal p{
+      margin:0 0 12px;
+      color:#6a3151;
+      font-size:15px;
+    }
+
+    #couplePhoto{
+      width:100%;
+      max-height:70svh;
+      object-fit:cover;
+      border-radius:14px;
+      border:2px solid #ffd6e7;
+      background:#fff4f9;
+    }
+
+    .close-btn{
+      margin-top:12px;
+      border:1px solid #e9dbe2;
+      background:#f7f2f5;
+      color:#5a2142;
+      border-radius:12px;
+      padding:10px 16px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    /* iPad refinement */
+    @media (min-width: 768px) and (max-width: 1366px){
+      .card{
+        width:min(78vw, 680px);
+        padding:24px 22px 18px;
+      }
+      .playground{ height:280px; }
+      .btn{ font-size:20px; padding:14px 24px; }
+      .volume{ width:180px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="hearts" aria-hidden="true"></div>
+
+  <!-- Hidden audio source -->
+  <audio id="song" loop preload="metadata" playsinline webkit-playsinline>
+    <!-- Put your audio file in same folder -->
+    <source src="in-my-years.mp3" type="audio/mpeg" />
+  </audio>
+
+  <main class="card">
+    <h1>Hello Arranib Zulfa aka Chanee 💌</h1>
+    <p class="msg">
+      this is afumado ridowan, your boyfriend.<br>
+      since valentine is coming, i’d be really glad if you’d be my valentine?
+    </p>
+
+    <section class="music" aria-label="Music player">
+      <p class="track">Men I Trust - In My Years 🎵</p>
+
+      <div class="controls">
+        <button id="playBtn" class="mini-btn" type="button">Play</button>
+        <input id="seek" class="seek" type="range" min="0" max="100" value="0" />
+        <span id="time" class="time">0:00 / 0:00</span>
+      </div>
+
+      <div class="sub-controls">
+        <label class="volume-wrap" for="volume">
+          Volume
+          <input id="volume" class="volume" type="range" min="0" max="1" step="0.01" value="0.85" />
+        </label>
+        <button id="restartBtn" class="mini-btn" type="button">Restart</button>
+      </div>
+
+      <p class="hint">If sound doesn’t start automatically on iPhone/iPad, just tap Play once.</p>
+    </section>
+
+    <div class="playground" id="playground">
+      <button class="btn" id="yesBtn" type="button">Yes 💖</button>
+      <button class="btn" id="noBtn" type="button">No 🙈</button>
+    </div>
+
+    <p class="tease" id="tease">try pressing “No” if you can 😏</p>
+    <p class="note">made by your favorite goofball 🫶</p>
+  </main>
+
+  <div class="modal hidden" id="loveModal" aria-hidden="true">
+    <div class="modal-card">
+      <h2>YAYYY 💞</h2>
+      <p>knew you’d pick the right one, now you’re officially stuck with me 💘</p>
+      <img id="couplePhoto" src="our-photo.jpg" alt="Our photo together" />
+      <button id="closeModal" class="close-btn" type="button">Close ✨</button>
+    </div>
+  </div>
+
+  <script>
+    // ===== Utility =====
+    const rand = (min,max)=>Math.random()*(max-min)+min;
+    const formatTime = (sec)=>{
+      if (!isFinite(sec)) return "0:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${String(s).padStart(2,'0')}`;
+    };
+
+    // ===== Hearts =====
+    const hearts = document.getElementById("hearts");
+    function floatingHearts(){
+      const h = document.createElement("span");
+      h.className = "heart";
+      h.textContent = Math.random() > 0.5 ? "💖" : "💘";
+      h.style.left = rand(0,100) + "vw";
+      h.style.fontSize = rand(14,30) + "px";
+      h.style.animationDuration = rand(4.5,9.2) + "s";
+      hearts.appendChild(h);
+      setTimeout(()=>h.remove(),10000);
+    }
+    setInterval(floatingHearts, 300);
+
+    function burstHearts(){
+      for(let i=0;i<30;i++){
+        setTimeout(()=>{
+          const h = document.createElement("span");
+          h.className = "heart";
+          h.textContent = ["💖","💘","💝","💕"][Math.floor(Math.random()*4)];
+          h.style.left = rand(8,92) + "vw";
+          h.style.bottom = rand(-5,15) + "px";
+          h.style.fontSize = rand(18,35) + "px";
+          h.style.animationDuration = rand(3.5,6.4) + "s";
+          hearts.appendChild(h);
+          setTimeout(()=>h.remove(),8000);
+        }, i*55);
+      }
+    }
+
+    // ===== Music player =====
+    const song = document.getElementById("song");
+    const playBtn = document.getElementById("playBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const seek = document.getElementById("seek");
+    const time = document.getElementById("time");
+    const volume = document.getElementById("volume");
+
+    volume.addEventListener("input", ()=> song.volume = Number(volume.value));
+    song.volume = Number(volume.value);
+
+    playBtn.addEventListener("click", async ()=>{
+      if(song.paused){
+        try{
+          await song.play();
+          playBtn.textContent = "Pause";
+        }catch(e){
+          playBtn.textContent = "Play";
+        }
+      }else{
+        song.pause();
+        playBtn.textContent = "Play";
+      }
+    });
+
+    restartBtn.addEventListener("click", ()=>{
+      song.currentTime = 0;
+      if(song.paused){
+        song.play().catch(()=>{});
+      }
+    });
+
+    song.addEventListener("loadedmetadata", ()=>{
+      time.textContent = `${formatTime(song.currentTime)} / ${formatTime(song.duration)}`;
+    });
+
+    song.addEventListener("timeupdate", ()=>{
+      const pct = song.duration ? (song.currentTime / song.duration) * 100 : 0;
+      seek.value = pct;
+      time.textContent = `${formatTime(song.currentTime)} / ${formatTime(song.duration)}`;
+    });
+
+    seek.addEventListener("input", ()=>{
+      if(song.duration){
+        song.currentTime = (Number(seek.value) / 100) * song.duration;
+      }
+    });
+
+    song.addEventListener("play", ()=> playBtn.textContent = "Pause");
+    song.addEventListener("pause", ()=> playBtn.textContent = "Play");
+
+    // ===== Valentine logic =====
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const playground = document.getElementById("playground");
+    const tease = document.getElementById("tease");
+    const modal = document.getElementById("loveModal");
+    const closeModal = document.getElementById("closeModal");
+
+    const lines = [
+      "eh? the no button is scared of you 😂",
+      "no button said: not today 🏃‍♀️",
+      "still trying? i respect the effort 😌",
+      "plot twist, only yes is available 💖",
+      "you almost got it... almost 🙈",
+      "nice reflex tho 😎"
+    ];
+    let dodgeCount = 0;
+
+    function dodgeNo(){
+      const area = playground.getBoundingClientRect();
+      const w = noBtn.offsetWidth;
+      const h = noBtn.offsetHeight;
+      const pad = 10;
+
+      const x = rand(pad, Math.max(pad, area.width - w - pad));
+      const y = rand(pad, Math.max(pad, area.height - h - pad));
+
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+      noBtn.style.transform = "scale(1.08)";
+      setTimeout(()=> noBtn.style.transform = "scale(1)", 110);
+
+      dodgeCount++;
+      tease.textContent = lines[dodgeCount % lines.length];
+
+      // make YES subtly more tempting
+      const yesScale = Math.min(1 + dodgeCount * 0.03, 1.25);
+      yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
+
+      if(navigator.vibrate) navigator.vibrate(20);
+    }
+
+    ["mouseenter","pointerdown","click","touchstart"].forEach(evt=>{
+      noBtn.addEventListener(evt, (e)=>{
+        e.preventDefault();
+        dodgeNo();
+      }, {passive:false});
+    });
+
+    // iPhone/iPad proximity dodge
+    playground.addEventListener("touchmove", (e)=>{
+      const t = e.touches[0];
+      if(!t) return;
+      const r = noBtn.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      const cy = r.top + r.height/2;
+      const dist = Math.hypot(t.clientX - cx, t.clientY - cy);
+      if(dist < 95) dodgeNo();
+    }, {passive:true});
+
+    yesBtn.addEventListener("click", async ()=>{
+      if(song.paused){
+        try{ await song.play(); }catch(e){}
+      }
+      modal.classList.remove("hidden");
+      modal.setAttribute("aria-hidden", "false");
+      burstHearts();
+    });
+
+    closeModal.addEventListener("click", ()=>{
+      modal.classList.add("hidden");
+      modal.setAttribute("aria-hidden", "true");
+    });
+
+    modal.addEventListener("click", (e)=>{
+      if(e.target === modal){
+        modal.classList.add("hidden");
+        modal.setAttribute("aria-hidden", "true");
+      }
+    });
+  </script>
+</body>
+</html>
